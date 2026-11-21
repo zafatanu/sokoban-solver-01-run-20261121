@@ -1,14 +1,17 @@
-// The kit's starter: a valid entry that solves nothing. It writes an empty solution.txt for every level, in the stated
-// format and worth no points. Replace solve() with a solver.
-// Local run: mkdir -p out && MAKEFUN_INPUT_DIR=practice/input MAKEFUN_OUTPUT_DIR=out node starter/main.ts
-import { mkdirSync, readdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { readFileSync, writeFileSync, mkdirSync, readdirSync } from 'node:fs';
 import { join } from 'node:path';
-const I = process.env.MAKEFUN_INPUT_DIR ?? '/input';
-const O = process.env.MAKEFUN_OUTPUT_DIR ?? '/output';
-/** The moves for a level in XSB: a string of u, d, l and r (an upper letter marks a push; case is not checked). */
-const solve = (_level: string): string => '';
-for (const id of readdirSync(I).sort()) {
-  const moves = solve(readFileSync(join(I, id, 'level.txt'), 'utf8'));
-  mkdirSync(join(O, id), { recursive: true });
-  writeFileSync(join(O, id, 'solution.txt'), `${moves}\n`);
+const IN = process.env.MAKEFUN_INPUT_DIR || '/input', OUT = process.env.MAKEFUN_OUTPUT_DIR || '/output';
+
+function solve(text: string): string {
+  return '';
+}
+
+const ids = readdirSync(IN).filter(d => !d.startsWith('.')).sort();
+for (const id of ids) {
+  let ans = '';
+  try {
+    ans = solve(readFileSync(join(IN, id, 'level.txt'), 'utf8').replace(/\r\n?/g, '\n'));
+  } catch (e) { ans = ''; }
+  mkdirSync(join(OUT, id), { recursive: true });
+  writeFileSync(join(OUT, id, 'solution.txt'), ans);
 }
