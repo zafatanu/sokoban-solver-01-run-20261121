@@ -31,7 +31,7 @@ function solveRoom(cells: number[], out: number, door: number, W: number,
     if (box0[cells[i]]) startBox |= 1 << i;
     if (goal[cells[i]]) goalMask |= 1 << i;
   }
-  entry = lIdx.get(door)!;
+  entry = lIdx.get(out)!;
   // dead cells: non-goal wall-corner -> box there is unmovable
   const dead = new Uint8Array(C);
   for (let i = 0; i < C; i++) {
@@ -234,7 +234,7 @@ function solve(text: string): string {
   const cbox = box0.slice();
   let moves = '';
   for (const r of rooms) {
-    const w = walkTo(cur, r.door, W, N, wall, cbox);
+    const w = walkTo(cur, r.out, W, N, wall, cbox);
     moves += w;
     if (w.length) { for (let k = 0; k < w.length; k++) cur = advance(cur, w[k], W, cbox); }
     const res = solveRoom(r.cells, r.out, r.door, W, wall, goal, cbox);
